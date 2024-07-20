@@ -15,15 +15,14 @@ export const finalizePurchase = async (req, res) => {
 
         // Obtener la información del carrito antes de eliminarlo
         const cart = await cartDao.getById(cartId);
-
+        console.log('Cart contents Users:', cart);
         // Crear un nuevo ticket
         const newTicket = await ticketDao.createTicket({
             totalPrice: cart.total,
-            productsBuy: cart.products.map(p => ({ product: p.product, quantity: p.quantity })),
             dateTime: new Date(),
             buyerEmail: user.email
         });
-
+        
         // Eliminar el carrito después de generar el ticket
         await cartDao.deleteCart(cartId);
 

@@ -80,18 +80,18 @@
               </div>
             </div>
             <hr />
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Purchase History</p>
+            {{#if user.isPremium}}
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Purchase History</p>
+                </div>
+                <div class="col-sm-9">
+                  <a href="/purchase/viewTicketuser" class="btn btn-outline-primary ms-1">Tickets</a>
+                </div>
               </div>
-              <div class="col-sm-9">
-                <a
-                  href="/purchase/viewTicketuser"
-                  class="btn btn-outline-primary ms-1"
-                >Tickets</a>
-              </div>
-            </div>
-            <hr />
+               <hr />
+              {{/if}}
+           
             {{#if user.isAdmin}}
               <div class="row">
                 <div class="col-sm-3">
