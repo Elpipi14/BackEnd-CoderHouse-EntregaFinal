@@ -134,4 +134,30 @@ export default class UserManager {
         }
     }
 
+    async updateUserDocuments(id, updateData) {
+        try {
+            const user = await UserModel.findById(id);
+            if (!user) {
+                throw new Error('User not found');
+            }
+    
+            // Actualiza o añade los documentos
+            Object.keys(updateData).forEach(docType => {
+                const existingDocIndex = user.documents.findIndex(doc => doc.name === docType);
+                if (existingDocIndex >= 0) {
+                    user.documents[existingDocIndex].reference = updateData[docType];
+                } else if (updateData[docType]) {
+                    user.documents.push({ name: docType, reference: updateData[docType] });
+                }
+            });
+    
+            await user.save();
+            return user;
+        } catch (error) {
+            console.error('Error updating user documents:', error);
+            throw error;
+        }
+    }
+    
+    
 }

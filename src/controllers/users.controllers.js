@@ -72,7 +72,8 @@ export const profile = async (req, res) => {
             const userProfile = {
                 ...user._doc,
                 isAdmin: user.role === 'admin',
-                isPremium: user.role === 'premium'
+                isPremium: user.role === 'premium',
+                isUser: user.role === 'user'
             };
 
             res.render('partials/profile', { user: userProfile });
@@ -116,7 +117,6 @@ export const changePassword = async (req, res) => {
         return res.status(500).redirect(`/changepassword-error?message=${encodeURIComponent(error.message)}`);
     }
 };
-
 
 export const requestPasswordChange = async (req, res) => {
     try {
@@ -180,6 +180,39 @@ export const forgotPassword = async (req, res) => {
     } catch (error) {
         console.error('Error changing password:', error.message);
         return res.status(500).redirect(`/forgot-error?message=${encodeURIComponent(error.message)}`);
+    }
+};
+
+export const uploadDocuments = async (req, res) => {
+    try {
+        console.log("req.user:", req.user);
+        const userId = req.user ? req.user._id : null;
+        
+        if (!userId) {
+            return res.status(400).json({ message: 'User ID is not available' });
+        }
+
+        console.log("req.files:", req.files);
+
+        const updateData = {
+            profile: req.files['profile'] ? req.files['profile'][0].path : undefined,
+            serviceBill: req.files['serviceBill'] ? req.files['serviceBill'][0].path : undefined,
+            product: req.files['product'] ? req.files['product'][0].path : undefined
+        };
+
+        await userService.updateUserDocuments(userId, updateData);
+
+        // Actualiza al usuario a premium si todos los documentos están cargados
+        const updateResult = await userService.updateUserToPremium(userId);
+
+        if (updateResult.success) {
+            res.status(200).json({ message: updateResult.message });
+        } else {
+            res.status(400).json({ message: updateResult.message });
+        }
+    } catch (error) {
+        console.error('Error uploading documents:', error);
+        res.status(500).json({ message: 'Internal server error.' });
     }
 };
 

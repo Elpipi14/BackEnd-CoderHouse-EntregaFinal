@@ -33,7 +33,13 @@ const userSchema = new mongoose.Schema({
   cartId: {  // Agrega este campo para almacenar el ID del carrito
     type: mongoose.Schema.Types.ObjectId,
     ref: "Cart",  // Asegúrate de que refleje el nombre correcto del modelo de carrito
-  }
+  },
+  documents: [
+      {
+        name: String,
+        reference: String
+      }
+    ]
 });
 
 export const UserModel = mongoose.model("users", userSchema);

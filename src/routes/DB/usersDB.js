@@ -1,6 +1,7 @@
 import { Router } from "express";
 import * as controller from "../../controllers/users.controllers.js";
 import passport from "passport";
+import upload from "../../utils/multer.js";
 const routerUser = Router();
 
 routerUser.post('/register', controller.register);
@@ -16,5 +17,14 @@ routerUser.post('/change-password', passport.authenticate("jwt", { session: fals
 routerUser.post('/request-password-change', controller.requestPasswordChange);
 
 routerUser.post('/forgot-password', controller.forgotPassword);
+
+routerUser.post('/premium/uploaduser', passport.authenticate('jwt', { session: false, failureRedirect: "/login" }), (req, res, next) => {
+    console.log('Authenticated user:', req.user);
+    next();
+}, upload.fields([
+    { name: 'profile'},
+    { name: 'serviceBill'},
+    { name: 'product'}
+]), controller.uploadDocuments);
 
 export default routerUser;

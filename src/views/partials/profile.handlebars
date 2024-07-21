@@ -1,5 +1,5 @@
 <section style="background-color: #eee;">
-  <div class="container py-5" style="height: 600px;">
+  <div class="container py-5">
     <div class="row">
       <div class="col-lg-4">
         <div class="card mb-4">
@@ -12,6 +12,7 @@
             />
             <div class="d-flex justify-content-center mb-2">
               <a href="/logout" class="btn btn-outline-primary ms-1">LogOut</a>
+              {{!-- administra el cambio de contraseña --}}
               <a
                 href="/change-password"
                 class="btn btn-outline-primary ms-1"
@@ -22,6 +23,7 @@
           </div>
         </div>
       </div>
+      {{!-- muestra contenido de profile del usuario --}}
       <div class="col-lg-8">
         <div class="card mb-4">
           <div class="card-body">
@@ -80,6 +82,18 @@
               </div>
             </div>
             <hr />
+            {{!-- cambio de plan user a premium --}}
+            {{#if user.isUser}}
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Premium plan</p>
+              </div>
+              <div class="col-sm-9">
+                <a href="/premium/uploaduser" class="btn btn-outline-primary ms-1">File Upload Here</a>
+              </div>
+              <hr />
+            {{/if}}
+            {{!-- solo ve los tickets de compra de cada usuario --}}
             {{#if user.isPremium}}
               <div class="row">
                 <div class="col-sm-3">
@@ -91,7 +105,7 @@
               </div>
                <hr />
               {{/if}}
-           
+           {{!-- administra productos, control de ticket Admin --}}
             {{#if user.isAdmin}}
               <div class="row">
                 <div class="col-sm-3">
@@ -113,6 +127,7 @@
                 </div>
               </div>
             {{/if}}
+            {{!-- Administra sus productos user Premium --}}
             {{#if user.isPremium}}
               <div class="row">
                 <div class="col-sm-3">

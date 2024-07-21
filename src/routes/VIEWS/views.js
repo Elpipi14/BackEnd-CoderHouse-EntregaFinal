@@ -126,6 +126,11 @@ routerViews.get('/gitHub', passport.authenticate('github', { failureRedirect: "/
     res.redirect("/profile");
 });
 
+// Renderiza UploadUser
+routerViews.get('/premium/uploaduser', passport.authenticate("jwt", { session: false, failureRedirect: "/profile" }), async (req, res) =>{
+    res.render('partials/upLoadUser');
+})
+
 //renderizar la vista register
 routerViews.get('/register', async (req, res) => {
     res.render('partials/register');
